@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CNC Resonance Calculator</string>
+    <string name="calculator_title">Resonansfrekvenser</string>
+    <string name="input_value_label">Input Value</string>
+    <string name="longditudinal_result">Lengderesonanser: </string>
+    <string name="flexural_result">Bøyeresonansfrekvenser: </string>
+</resources>
