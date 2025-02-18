@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cncresonancecalculator.R
 import com.example.cncresonancecalculator.ui.components.Material
 import com.example.cncresonancecalculator.ui.components.Shape
+import com.example.cncresonancecalculator.ui.components.calculateResult // Import the function
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +43,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
 
     val calculatedResults by remember(selectedMaterial, selectedShape, inputValue) {
         derivedStateOf {
-            calculateResult(selectedMaterial, selectedShape, inputValue)
+            calculateResult(selectedMaterial, selectedShape, inputValue) // Use the imported function
         }
     }
     val (calculatedResult1, calculatedResult2) = calculatedResults
@@ -78,7 +79,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                 expanded = isMaterialDropdownExpanded,
                 onDismissRequest = { isMaterialDropdownExpanded = false }
             ) {
-                Material.entries.forEach { material -> // Use Material.entries
+                Material.entries.forEach { material ->
                     DropdownMenuItem(
                         text = { Text(text = material.displayName) },
                         onClick = {
@@ -109,7 +110,7 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
                 expanded = isShapeDropdownExpanded,
                 onDismissRequest = { isShapeDropdownExpanded = false }
             ) {
-                Shape.entries.forEach { shape -> // Use Shape.entries
+                Shape.entries.forEach { shape ->
                     DropdownMenuItem(
                         text = { Text(text = shape.displayName) },
                         onClick = {
@@ -145,12 +146,4 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
             Text(text = calculatedResult2.toString(), style = MaterialTheme.typography.bodyLarge)
         }
     }
-}
-
-fun calculateResult(material: Material, shape: Shape, inputValue: String): Pair<Double, Double> {
-    // Basic calculation logic (replace with your actual logic)
-    val input = inputValue.toDoubleOrNull() ?: 0.0
-    val result1 = input * material.value
-    val result2 = input * shape.value
-    return Pair(result1, result2)
 }
