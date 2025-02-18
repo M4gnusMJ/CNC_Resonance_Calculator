@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">CNC Resonance Calculator</string>
     <string name="calculator_title">Resonansfrekvenser</string>
-    <string name="input_value_label">Input Value</string>
-    <string name="longditudinal_result">Lengderesonanser: </string>
-    <string name="flexural_result">Bøyeresonansfrekvenser: </string>
+    <string name="input_length_label">Utstikk [m]</string>
+    <string name="outer_diameter_label">Ytre Diameter [m]</string>
+    <string name="inner_diameter_label">Indre Diameter [m]</string>
+    <string name="use_tailstock_label">Pinolspiss</string>
+    <string name="first_frequency_result">Første Frekvens: </string>
+    <string name="second_frequency_result">Andre Frekvens: </string>
+    <string name="third_frequency_result">Tredje Frekvens: </string>
 </resources>

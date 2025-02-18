@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -29,24 +30,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cncresonancecalculator.R
 import com.example.cncresonancecalculator.ui.components.Material
-import com.example.cncresonancecalculator.ui.components.Shape
-import com.example.cncresonancecalculator.ui.components.calculateResult // Import the function
+import com.example.cncresonancecalculator.ui.components.calculateResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculatorScreen(modifier: Modifier = Modifier) {
     var selectedMaterial by remember { mutableStateOf(Material.ALUMINUM) }
-    var selectedShape by remember { mutableStateOf(Shape.SQUARE) }
     var inputValue by remember { mutableStateOf("") }
+    var outerDiameter by remember { mutableStateOf("") }
+    var innerDiameter by remember { mutableStateOf("") }
+    var useTailstock by remember { mutableStateOf(false) }
     var isMaterialDropdownExpanded by remember { mutableStateOf(false) }
-    var isShapeDropdownExpanded by remember { mutableStateOf(false) }
 
-    val calculatedResults by remember(selectedMaterial, selectedShape, inputValue) {
+    val calculatedResults by remember(
+        selectedMaterial,
+        inputValue,
+        outerDiameter,
+        innerDiameter,
+        useTailstock
+    ) {
         derivedStateOf {
-            calculateResult(selectedMaterial, selectedShape, inputValue) // Use the imported function
+            calculateResult(
+                selectedMaterial,
+                inputValue,
+                outerDiameter,
+                innerDiameter,
+                useTailstock
+            )
         }
     }
-    val (calculatedResult1, calculatedResult2) = calculatedResults
+    val (calculatedResult1, calculatedResult2, calculatedResult3) = calculatedResults
 
     Column(modifier = modifier.padding(16.dp)) {
         // Page Title
@@ -93,57 +106,60 @@ fun CalculatorScreen(modifier: Modifier = Modifier) {
 
         Spacer(modifier = Modifier.padding(8.dp))
 
-        // Shape Dropdown
-        ExposedDropdownMenuBox(
-            expanded = isShapeDropdownExpanded,
-            onExpandedChange = { isShapeDropdownExpanded = !isShapeDropdownExpanded },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            OutlinedTextField(
-                value = selectedShape.displayName,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isShapeDropdownExpanded) },
-                modifier = Modifier.menuAnchor().fillMaxWidth()
-            )
-            ExposedDropdownMenu(
-                expanded = isShapeDropdownExpanded,
-                onDismissRequest = { isShapeDropdownExpanded = false }
-            ) {
-                Shape.entries.forEach { shape ->
-                    DropdownMenuItem(
-                        text = { Text(text = shape.displayName) },
-                        onClick = {
-                            selectedShape = shape
-                            isShapeDropdownExpanded = false
-                        }
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.padding(8.dp))
-
         // Input Field
         OutlinedTextField(
             value = inputValue,
             onValueChange = { inputValue = it },
-            label = { Text(stringResource(id = R.string.input_value_label)) },
+            label = { Text(stringResource(id = R.string.input_length_label)) },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.padding(8.dp))
 
+        OutlinedTextField(
+            value = outerDiameter,
+            onValueChange = { outerDiameter = it },
+            label = { Text(stringResource(id = R.string.outer_diameter_label)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
+        OutlinedTextField(
+            value = innerDiameter,
+            onValueChange = { innerDiameter = it },
+            label = { Text(stringResource(id = R.string.inner_diameter_label)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
+        // Tailstock Checkbox
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = useTailstock,
+                onCheckedChange = { useTailstock = it }
+            )
+            Text(text = stringResource(id = R.string.use_tailstock_label))
+        }
+
+        Spacer(modifier = Modifier.padding(8.dp))
+
         // Result Field
         Row {
-            Text(text = stringResource(id = R.string.longditudinal_result), style = MaterialTheme.typography.bodyLarge)
+            Text(text = stringResource(id = R.string.first_frequency_result), style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = calculatedResult1.toString(), style = MaterialTheme.typography.bodyLarge)
         }
         Row {
-            Text(text = stringResource(id = R.string.flexural_result), style = MaterialTheme.typography.bodyLarge)
+            Text(text = stringResource(id = R.string.second_frequency_result), style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = calculatedResult2.toString(), style = MaterialTheme.typography.bodyLarge)
+        }
+        Row {
+            Text(text = stringResource(id = R.string.third_frequency_result), style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = calculatedResult3.toString(), style = MaterialTheme.typography.bodyLarge)
         }
     }
 }
