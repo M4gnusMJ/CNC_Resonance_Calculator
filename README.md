@@ -2,4 +2,4 @@ This uses Euler-Lagrange beam theory for fixed ends and cantilever beams to calc
 Uses compose for GUI
 
 
-Yet to implement is Timoschenko beam theroy for more accurate calculation of beam frequencies, and an About page. The application has not been published on the google play store due to not having gone thorugh mandatory beta testing.
+Future steps is implementing Timoschenko beam theroy for more accurate calculation of beam frequencies, and an About page. The application has also not been published on the google play store, due to not having gone thorugh mandatory beta testing.
